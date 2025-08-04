@@ -3,11 +3,11 @@ import pandas as pd
 from datetime import datetime
 from math import radians, cos, sin, asin, sqrt
 
-# Load all ZIP code lat/lon data from CSV
+# Load ZIP code lat/lon data
 @st.cache_data
 def load_zip_data():
-    df = pd.read_csv("uszips.csv", dtype={"zip": str})
-    return dict(zip(df["zip"], zip(df["lat"], df["lng"])))
+    df = pd.read_csv("uszips.csv")
+    return dict(zip(df['zip'].astype(str), zip(df['lat'], df['lng'])))
 
 zip_latlon = load_zip_data()
 
@@ -18,16 +18,14 @@ mock_data = pd.DataFrame([
     {"Load ID": "RL1003", "Pickup Zip": "36603", "Pickup City": "Mobile, AL", "Delivery City": "Birmingham, AL", "Broker": "Delta Carriers", "Broker Email": "broker3@example.com", "Broker Phone": "555-654-3210", "Miles": 260},
 ])
 
-# Haversine distance calculator
 def haversine(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
     dlon = lon2 - lon1 
     dlat = lat2 - lat1 
-    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
     c = 2 * asin(sqrt(a))
     return 3956 * c  # miles
 
-# Find reloads within radius
 def find_matches(truck_zip, max_radius):
     if truck_zip not in zip_latlon:
         return pd.DataFrame()
@@ -68,13 +66,14 @@ if submitted:
         st.subheader(f"Reload Matches (within {search_radius} miles)")
         for i, row in match_df.iterrows():
             with st.expander(f"Load {row['Load ID']}"):
-                st.write(f"**Pickup:** {row['Pickup City']}")
-                st.write(f"**Delivery:** {row['Delivery City']}")
-                st.write(f"**Broker:** {row['Broker']}")
-                st.write(f"**Deadhead:** {row['Deadhead (mi)']} mi")
+                st.write(f"Pickup: {row['Pickup City']}")
+                st.write(f"Delivery: {row['Delivery City']}")
+                st.write(f"Broker: {row['Broker']}")
+                st.write(f"Deadhead: {row['Deadhead (mi)']} mi")
                 st.markdown(f"[📧 Email Broker](mailto:{row['Broker Email']})")
                 st.markdown(f"[📞 Call Broker](tel:{row['Broker Phone']})")
-                booked = st.toggle(f"Booked - {row['Load ID']}", key=row['Load ID'])
+                st.toggle(f"Booked - {row['Load ID']}", key=row['Load ID'])
     else:
         st.warning(f"No loads found within {max_radius} miles.")
+
 
