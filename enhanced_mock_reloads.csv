@@ -1,0 +1,4 @@
+Pickup City,Pickup ZIP,Delivery City,Delivery ZIP,Miles,Rate,Broker,Contact,Deadhead Miles,Booked
+"Mount Vernon, IL",62864,"Mobile, AL",36602,615,1850,ABC Logistics,mailto:dispatch@abc.com,45,False
+"Marion, IL",62959,"Pensacola, FL",32501,610,1790,Southeast Freight,tel:8002225555,52,False
+"Effingham, IL",62401,"Jackson, MS",39201,590,1725,Delta Haul,mailto:load@deltahaul.com,63,False
