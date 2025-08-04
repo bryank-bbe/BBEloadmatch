@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 from datetime import datetime
@@ -70,12 +69,17 @@ if submitted:
         st.subheader(f"Reload Matches (within {search_radius} miles)")
         for i, row in match_df.iterrows():
             with st.expander(f"Load {row['Load ID']}"):
-               st.write(f"Pickup: {row['Pickup City']}")  
-Delivery: {row['Delivery City']}")
+                st.write(
+                    f"""Pickup: {row['Pickup City']}
+Delivery: {row['Delivery City']}"""
+                )
                 st.write(f"Broker: {row['Broker']}")
                 st.write(f"Deadhead: {row['Deadhead (mi)']} mi")
                 st.markdown(f"[📧 Email Broker](mailto:{row['Broker Email']})")
                 st.markdown(f"[📞 Call Broker](tel:{row['Broker Phone']})")
                 booked = st.toggle(f"Booked - {row['Load ID']}", key=row['Load ID'])
+    else:
+        st.warning(f"No loads found within {max_radius} miles.")
+
     else:
         st.warning(f"No loads found within {max_radius} miles.")
