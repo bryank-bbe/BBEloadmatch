@@ -10,14 +10,15 @@ mock_data = pd.DataFrame([
     {"Load ID": "RL1003", "Pickup Zip": "36603", "Pickup City": "Mobile, AL", "Delivery City": "Birmingham, AL", "Broker": "Delta Carriers", "Broker Email": "broker3@example.com", "Broker Phone": "555-654-3210", "Miles": 260},
 ])
 
-# Zip code to lat/lon mapping for demo
+# Zip code to lat/lon mapping
 zip_latlon = {
     "36602": (30.6944, -88.0431),
     "36532": (30.5224, -87.9036),
     "36603": (30.6834, -88.0431),
-    "30301": (33.7490, -84.3880),  # Atlanta
-    "31401": (32.0809, -81.0912),  # Savannah
-    "35203": (33.5186, -86.8104),  # Birmingham
+    "30301": (33.7490, -84.3880),
+    "31401": (32.0809, -81.0912),
+    "35203": (33.5186, -86.8104),
+    "62814": (37.997, -88.933),  # Benton, IL
 }
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -69,12 +70,12 @@ if submitted:
         st.subheader(f"Reload Matches (within {search_radius} miles)")
         for i, row in match_df.iterrows():
             with st.expander(f"Load {row['Load ID']}"):
-                st.write(f"Pickup: {row['Pickup City']}")
-                st.write(f"Delivery: {row['Delivery City']}")
-                st.write(f"Broker: {row['Broker']}")
-                st.write(f"Deadhead: {row['Deadhead (mi)']} mi")
+                st.write(f"**Pickup:** {row['Pickup City']}")
+                st.write(f"**Delivery:** {row['Delivery City']}")
+                st.write(f"**Broker:** {row['Broker']}")
+                st.write(f"**Deadhead:** {row['Deadhead (mi)']} miles")
                 st.markdown(f"[📧 Email Broker](mailto:{row['Broker Email']})")
                 st.markdown(f"[📞 Call Broker](tel:{row['Broker Phone']})")
-                booked = st.toggle(f"Booked - {row['Load ID']}", key=row['Load ID'])
+                st.toggle(f"Booked - {row['Load ID']}", key=row['Load ID'])
     else:
         st.warning(f"No loads found within {max_radius} miles.")
