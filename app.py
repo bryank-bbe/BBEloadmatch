@@ -78,6 +78,3 @@ if submitted:
                 booked = st.toggle(f"Booked - {row['Load ID']}", key=row['Load ID'])
     else:
         st.warning(f"No loads found within {max_radius} miles.")
-
-    else:
-        st.warning(f"No loads found within {max_radius} miles.")
